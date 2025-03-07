@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>С 8 Марта!</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #ff80bf, #9370db);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+            position: relative;
+        }
+        
+        .card {
+            width: 85%;
+            max-width: 350px;
+            background-color: rgba(255, 255, 255, 0.85);
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            padding: 30px;
+            text-align: center;
+            position: relative;
+            z-index: 2;
+            backdrop-filter: blur(10px);
+        }
+        
+        h1 {
+            color: #d4369e;
+            margin-bottom: 20px;
+            font-size: 28px;
+        }
+        
+        p {
+            color: #7b2cbf;
+            font-size: 18px;
+            line-height: 1.6;
+            margin-bottom: 25px;
+        }
+        
+        .flowers {
+            display: flex;
+            justify-content: space-around;
+            margin: 20px 0;
+        }
+        
+        .flower {
+            font-size: 40px;
+        }
+        
+        .hearts {
+            display: flex;
+            justify-content: center;
+            margin: 10px 0;
+        }
+        
+        .heart {
+            color: #ff66b3;
+            font-size: 30px;
+            margin: 0 5px;
+            animation: pulse 1.5s infinite alternate;
+        }
+        
+        .heart:nth-child(2) {
+            animation-delay: 0.5s;
+        }
+        
+        .heart:nth-child(3) {
+            animation-delay: 1s;
+        }
+        
+        .bloom {
+            position: absolute;
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(255, 182, 193, 0.8), rgba(219, 112, 219, 0.4));
+            filter: blur(20px);
+            z-index: 1;
+        }
+        
+        .bloom:nth-child(1) {
+            top: 10%;
+            left: 10%;
+            animation: float 8s infinite ease-in-out;
+        }
+        
+        .bloom:nth-child(2) {
+            bottom: 20%;
+            right: 5%;
+            width: 100px;
+            height: 100px;
+            animation: float 10s 1s infinite ease-in-out reverse;
+        }
+        
+        .bloom:nth-child(3) {
+            bottom: 10%;
+            left: 15%;
+            width: 120px;
+            height: 120px;
+            animation: float 9s 2s infinite ease-in-out;
+        }
+        
+        .bloom:nth-child(4) {
+            top: 15%;
+            right: 20%;
+            width: 80px;
+            height: 80px;
+            animation: float 7s 1.5s infinite ease-in-out reverse;
+        }
+        
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            100% { transform: scale(1.3); }
+        }
+        
+        @keyframes float {
+            0% { transform: translateY(0) translateX(0); }
+            50% { transform: translateY(20px) translateX(10px); }
+            100% { transform: translateY(0) translateX(0); }
+        }
+        
+        .button {
+            display: inline-block;
+            background: linear-gradient(135deg, #ff66b3, #9370db);
+            color: white;
+            padding: 12px 25px;
+            border-radius: 25px;
+            text-decoration: none;
+            font-weight: bold;
+            box-shadow: 0 4px 15px rgba(155, 89, 182, 0.4);
+            transition: transform 0.3s, box-shadow 0.3s;
+            margin-top: 10px;
+            cursor: pointer;
+            border: none;
+        }
+        
+        .button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(155, 89, 182, 0.6);
+        }
+        
+        .message-popup {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 10;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s, visibility 0.3s;
+        }
+        
+        .message-popup.active {
+            opacity: 1;
+            visibility: visible;
+        }
+        
+        .message-content {
+            background-color: white;
+            padding: 30px;
+            border-radius: 20px;
+            max-width: 80%;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            position: relative;
+            transform: scale(0.8);
+            transition: transform 0.3s;
+        }
+        
+        .message-popup.active .message-content {
+            transform: scale(1);
+        }
+        
+        .close-button {
+            position: absolute;
+            top: 10px;
+            right: 15px;
+            font-size: 24px;
+            color: #999;
+            cursor: pointer;
+            border: none;
+            background: none;
+        }
+        
+        .falling-hearts {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 9;
+        }
+        
+        .falling-heart {
+            position: absolute;
+            font-size: 24px;
+            animation: fall linear;
+            opacity: 0;
+        }
+        
+        @keyframes fall {
+            0% {
+                transform: translateY(-20px) rotate(0deg);
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(100vh) rotate(360deg);
+                opacity: 0.7;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="bloom"></div>
+    <div class="bloom"></div>
+    <div class="bloom"></div>
+    <div class="bloom"></div>
+    
+    <div class="card">
+        <h1>Открытка с 8 Марта</h1>
+        <div class="flowers">
+            <div class="flower">🌷</div>
+            <div class="flower">🌸</div>
+            <div class="flower">🌹</div>
+        </div>
+        
+        <p></p>
+        
+        <div class="hearts">
+            <div class="heart">❤️</div>
+            <div class="heart">💕</div>
+            <div class="heart">❤️</div>
+        </div>
+        
+        <button class="button" id="sendGreeting">Открыть</button>
+    </div>
+    
+    <div class="message-popup" id="messagePopup">
+        <div class="message-content">
+            <button class="close-button" id="closePopup">×</button>
+            <h2 style="color: #d4369e;">Поздравление получено!</h2>
+            <p style="color: #7b2cbf;">Поздравляю с праздником чудесную женщину, и всё что ты делаешь.
+                Твоя сила, красота и любовь освещают мой мир каждый день.
+                Желаю тебе радости, мира и всего счастья, которого ты заслуживаешь!</p>
+            <div class="flowers" style="margin-top: 20px;">
+                <div class="flower">💐</div>
+                <div class="flower">🌺</div>
+                <div class="flower">💮</div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="falling-hearts" id="fallingHearts"></div>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const sendButton = document.getElementById('sendGreeting');
+            const messagePopup = document.getElementById('messagePopup');
+            const closePopup = document.getElementById('closePopup');
+            const fallingHeartsContainer = document.getElementById('fallingHearts');
+            
+            // Function to create falling hearts animation
+            function createFallingHearts() {
+                fallingHeartsContainer.innerHTML = '';
+                
+                const heartSymbols = ['❤️', '💕', '💖', '💗', '💘'];
+                const numberOfHearts = 30;
+                
+                for (let i = 0; i < numberOfHearts; i++) {
+                    const heart = document.createElement('div');
+                    heart.classList.add('falling-heart');
+                    
+                    // Random heart type
+                    const randomHeartIndex = Math.floor(Math.random() * heartSymbols.length);
+                    heart.textContent = heartSymbols[randomHeartIndex];
+                    
+                    // Random position
+                    const leftPosition = Math.random() * 100;
+                    heart.style.left = `${leftPosition}%`;
+                    
+                    // Random start delay
+                    const delay = Math.random() * 3;
+                    heart.style.animationDelay = `${delay}s`;
+                    
+                    // Random duration
+                    const duration = Math.random() * 3 + 2;
+                    heart.style.animationDuration = `${duration}s`;
+                    
+                    fallingHeartsContainer.appendChild(heart);
+                }
+            }
+            
+            // Handle button click
+            sendButton.addEventListener('click', function() {
+                // Show the popup message
+                messagePopup.classList.add('active');
+                
+                // Create falling hearts animation
+                createFallingHearts();
+                
+                // Simulate sending with vibration (if supported)
+                if (navigator.vibrate) {
+                    navigator.vibrate(200);
+                }
+            });
+            
+            // Close the popup when clicking the close button
+            closePopup.addEventListener('click', function() {
+                messagePopup.classList.remove('active');
+            });
+            
+            // Close the popup when clicking outside of it
+            messagePopup.addEventListener('click', function(event) {
+                if (event.target === messagePopup) {
+                    messagePopup.classList.remove('active');
+                }
+            });
+        });
+    </script>
+</body>
+</html>
